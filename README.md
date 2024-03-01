@@ -11,10 +11,9 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 ## Proje Yapısı
 
 
-  - `main.py`: Isı haritası oluşturma işlemlerini gerçekleştiren Python betiği.
-- `results/`: Örnek ısı haritalarının kaydedildiği dizin.
+- `main.py`: Isı haritası oluşturma işlemlerini gerçekleştiren Python betiği.
 - `README.md`: Proje hakkında genel bilgilerin ve kullanım talimatlarının bulunduğu dosya.
-- `setup.sh` : Otomatik kurulum betiği.
+- `colab.ipynb` : Otomatik kurulumlu colab sayfası.
 ## Örnek Isı Haritası
 ![Isı Haritası](https://github.com/PolarBear110/halisaha/blob/main/%C4%B1ns_map.png)
 ## Gereksinimler
