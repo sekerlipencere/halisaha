@@ -16,7 +16,7 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 - `README.md`: Proje hakkında genel bilgilerin ve kullanım talimatlarının bulunduğu dosya.
 - `setup.sh` : Otomatik kurulum betiği.
 ## Örnek Isı Haritası
-![Isı Haritası](/path/to/image.png)
+![Isı Haritası](https://github.com/PolarBear110/halisaha/blob/main/%C4%B1ns_map.png)
 ## Gereksinimler
 
 - Python 3.x
@@ -27,9 +27,10 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 
 ## Kurulum
 
- ```bash setup.sh```
-- VEYA
-```git clone https://github.com/PolarBear110/halisaha.git```
-```cd halisaha```
-```pip install -r requirements.txt```
-```python main.py```
+- ```git clone https://github.com/PolarBear110/halisaha.git```
+  
+- ```cd halisaha```
+
+- ```pip install -r requirements.txt```
+
+- ```python main.py```
