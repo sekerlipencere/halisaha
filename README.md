@@ -26,6 +26,7 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 - tqdm
 
 ## Kurulum
+- [![Colabta Aç](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PolarBear110/halisaha/blob/main/colab.ipynb)
 
 - ```git clone https://github.com/PolarBear110/halisaha.git```
   
