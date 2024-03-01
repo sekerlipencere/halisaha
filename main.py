@@ -1,79 +1,80 @@
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-import os
-from tqdm import tqdm
-import time
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+from tqdm import tqdm
+import time
 
-def create_heatmap(video_path, save_path_1, save_path_2=None):
-    # Videoyu yükleyin
-    cap = cv2.VideoCapture(video_path)
+def create_heatmap(video_path, save_path_1, save_path_2=None):
+    cap = cv2.VideoCapture(video_path)
 
-    # Değişim miktarlarını toplamak için bir matris oluştur
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    heat_map = np.zeros((height, width), dtype=np.float32)
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    heat_map_1 = np.zeros((height, width), dtype=np.float32)
+    heat_map_2 = np.zeros((height, width), dtype=np.float32)
 
-    # İlk frame'i oku
-    ret, prev_frame = cap.read()
-    prev_frame = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
+    ret, prev_frame = cap.read()
+    prev_frame = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
 
-    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    tqdm_bar = tqdm(total=frame_count, desc="Isı haritası oluşturuluyor", leave=False)
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    tqdm_bar = tqdm(total=frame_count, desc="Isı haritası oluşturuluyor", leave=False)
 
-    while True:
-        # Sonraki frame'i oku
-        ret, frame = cap.read()
-        if not ret:
-            break
+    frame_number = 0
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    half_frames = total_frames // 2
 
-        # Frame'i griye çevir
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
 
-        # Frame'ler arasındaki farkı hesapla
-        diff = cv2.absdiff(prev_frame, gray)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        # Farkı ısı haritasına ekle
-        heat_map += diff
+        diff = cv2.absdiff(prev_frame, gray)
 
-        # Şimdiki frame'i bir sonraki iterasyon için sakla
-        prev_frame = gray
+        if frame_number < half_frames:
+            heat_map_1 += diff
+        else:
+            heat_map_2 += diff
 
-        tqdm_bar.update(1)
+        prev_frame = gray
+        frame_number += 1
 
-    tqdm_bar.close()
+        tqdm_bar.update(1)
 
-    # Heatmap'i normalize edelim ve bir eşik değeri belirleyelim
-    # Burada en yüksek %1'lik değerleri vurgulayacak şekilde ayar yapıyoruz
-    max_val = np.max(heat_map)
-    threshold_high = np.percentile(heat_map, 99)  # En yüksek %1
-    threshold_low = np.percentile(heat_map, 50)   # Orta değer
+    tqdm_bar.close()
 
-    # Eşik değerler arasını normalize edelim
-    heat_map_clipped = np.clip(heat_map, threshold_low, threshold_high)
-    heat_map_normalized = (heat_map_clipped - threshold_low) / (threshold_high - threshold_low)
+    max_val_1 = np.max(heat_map_1)
+    max_val_2 = np.max(heat_map_2)
 
-    # Isı haritasını görselleştir
-    plt.imshow(heat_map_normalized, cmap='Blues', vmin=0, vmax=1)
-    plt.colorbar()
+    threshold_high_1 = np.percentile(heat_map_1, 99)
+    threshold_low_1 = np.percentile(heat_map_1, 50)
 
-    # Isı haritasını bir dosyaya kaydet
-    plt.savefig(save_path_1)
+    threshold_high_2 = np.percentile(heat_map_2, 99)
+    threshold_low_2 = np.percentile(heat_map_2, 50)
 
-    # Görseli göster
-    plt.show()
+    heat_map_clipped_1 = np.clip(heat_map_1, threshold_low_1, threshold_high_1)
+    heat_map_normalized_1 = (heat_map_clipped_1 - threshold_low_1) / (threshold_high_1 - threshold_low_1)
 
-    # Kaynakları serbest bırak
-    cap.release()
+    heat_map_clipped_2 = np.clip(heat_map_2, threshold_low_2, threshold_high_2)
+    heat_map_normalized_2 = (heat_map_clipped_2 - threshold_low_2) / (threshold_high_2 - threshold_low_2)
 
-    if save_path_2:
-        # İkinci bir kayıt yolu verilmişse, ikinci bir ısı haritası oluştur
-        create_heatmap(video_path, save_path_2)
+    plt.imshow(heat_map_normalized_1, cmap='Blues', vmin=0, vmax=1)
+    plt.colorbar()
+    plt.savefig(save_path_1)
+    plt.show()
 
-def print_welcome_message():
-    welcome_message = """
- 
-                                                                                               
+    if save_path_2:
+        plt.imshow(heat_map_normalized_2, cmap='Blues', vmin=0, vmax=1)
+        plt.colorbar()
+        plt.savefig(save_path_2)
+        plt.show()
+
+    cap.release()
+
+def print_welcome_message():
+    welcome_message = """
+                                                                                                   
                        .---.                                                                   
    .                   |   |.--.                                 .                             
  .'|                   |   ||__|                               .'|                             
@@ -87,26 +88,26 @@ def print_welcome_message():
  | '.    | '.\ \._,\ '/                   .'   \_.'  \ \._,\ '/| '.    | '.\ \._,\ '/          
  '---'   '---'`--'  `"                                `--'  `" '---'   '---'`--'  `"           
 
-                                                                          
-    """
-    for char in welcome_message:
-        print(char, end='', flush=True)
-        time.sleep(0.001)
+                                                                          
+    """
+    for char in welcome_message:
+        print(char, end='', flush=True)
+        time.sleep(0.000000000000000000001)
 
-def main():
-    print_welcome_message()
-    video_path = input("\nLütfen video dosyasının yolunu girin: ")
-    split_video = input("Videoyu ikiye bölmek istiyor musunuz? (E/H): ").upper()
+def main():
+    print_welcome_message()
+    video_path = input("\nLütfen halı saha video dosyasının yolunu girin: ")
+    split_video = input("Takımlar devre arası yarısaha değişiliği yaptı mı? (E/H): ").upper()
 
-    if split_video == "E":
-        save_path_1 = input("Isı haritasının kaydedileceği yolun ilk kısmını girin: ")
-        save_path_2 = input("Isı haritasının kaydedileceği yolun ikinci kısmını girin: ")
-        create_heatmap(video_path, save_path_1, save_path_2)
-    elif split_video == "H":
-        save_path = input("Isı haritasının kaydedileceği yolun tamamını girin: ")
-        create_heatmap(video_path, save_path)
-    else:
-        print("Geçersiz seçim! Lütfen 'E' veya 'H' girin.")
+    if split_video == "E":
+        save_path_1 = input("İlk yarının ısı harittasının kaydediliceği yol: ")
+        save_path_2 = input("İkinci yarının ısı harittasının kaydediliceği yol: ")
+        create_heatmap(video_path, save_path_1, save_path_2)
+    elif split_video == "H":
+        save_path = input("Maçın ısı haritasının kaydediliceği yol: ")
+        create_heatmap(video_path, save_path)
+    else:
+        print("Geçersiz seçim! Lütfen 'E' veya 'H' girin.")
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__":
+    main()
