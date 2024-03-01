@@ -1,4 +1,4 @@
-# Hali Saha Maçları Hareket Isı Haritası Oluşturma Projesi
+# Halı Saha Maçları Hareket Isı Haritası Oluşturma Projesi
 
 Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı haritaları oluşturmayı amaçlar. Oluşturulan ısı haritaları, maç sırasında hangi bölgelerin daha fazla hareketli olduğunu görsel olarak gösterir. Bu bilgi, takımların performansını değerlendirmek ve taktiksel analiz yapmak için kullanılabilir.
 
@@ -15,7 +15,8 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 - `data/`: Video dosyalarının bulunduğu dizin.
 - `results/`: Oluşturulan ısı haritalarının kaydedildiği dizin.
 - `README.md`: Proje hakkında genel bilgilerin ve kullanım talimatlarının bulunduğu dosya.
-
+## Örnek Isı Haritası
+![Isı Haritası](/path/to/image.png)
 ## Gereksinimler
 
 - Python 3.x
@@ -26,4 +27,8 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 
 ## Kurulum
 
-- bash setup.sh
+ '''bash setup.sh'''
+- VEYA
+'''pip install r- requirements.txt'''
+'''git clone https://github.com/PolarBear110/halisaha.git'''
+'''python main.py'''
