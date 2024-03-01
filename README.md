@@ -24,4 +24,6 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 - Matplotlib
 - tqdm
 
-Gerekli kütüphaneleri yüklemek için aşağıdaki komutu kullanabilirsiniz:
+## Kurulum
+
+- bash setup.sh
