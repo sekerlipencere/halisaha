@@ -10,11 +10,11 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 
 ## Proje Yapısı
 
-- `src/`: Kaynak kodlarının bulunduğu dizin.
-  - `create_heatmap.py`: Isı haritası oluşturma işlemlerini gerçekleştiren Python betiği.
-- `data/`: Video dosyalarının bulunduğu dizin.
-- `results/`: Oluşturulan ısı haritalarının kaydedildiği dizin.
+
+  - `main.py`: Isı haritası oluşturma işlemlerini gerçekleştiren Python betiği.
+- `results/`: Örnek ısı haritalarının kaydedildiği dizin.
 - `README.md`: Proje hakkında genel bilgilerin ve kullanım talimatlarının bulunduğu dosya.
+- `setup.sh` : Otomatik kurulum betiği.
 ## Örnek Isı Haritası
 ![Isı Haritası](/path/to/image.png)
 ## Gereksinimler
@@ -27,8 +27,9 @@ Bu proje, hali saha maçlarının video kayıtlarını kullanarak hareket ısı 
 
 ## Kurulum
 
- '''bash setup.sh'''
+ ```bash setup.sh```
 - VEYA
-'''pip install r- requirements.txt'''
-'''git clone https://github.com/PolarBear110/halisaha.git'''
-'''python main.py'''
+```git clone https://github.com/PolarBear110/halisaha.git```
+```cd halisaha```
+```pip install -r requirements.txt```
+```python main.py```
